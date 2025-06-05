@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema({
     },
     lastName: {
         type: String,
+        required: true,
         minlength: 4,
         maxlength: 20,
         trim: true,
@@ -34,7 +35,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         minlength: 5,
-        maxlength: 20,
         trim: true,
         validate(value){
             if(!validator.isStrongPassword(value,{
@@ -50,13 +50,11 @@ const userSchema = new mongoose.Schema({
     },
     age: {
         type: Number,
-        required: true,
         min: 18,
         max: 100,
     },
     gender: {
         type: String,
-        required: true,
         validate(value){
             if(value !== "M" && value !== "F"){
                 throw new Error("Gender must be either M or F")
