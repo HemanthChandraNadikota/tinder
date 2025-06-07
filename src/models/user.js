@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const jwt = require("jsonwebtoken")
+const bcrypt = require("bcrypt")
 
 const userSchema = new mongoose.Schema({
     firstName: {
@@ -55,6 +57,10 @@ const userSchema = new mongoose.Schema({
     },
     gender: {
         type: String,
+        enum: {
+            values: ["M", "F"],
+            message: "{VALUE} is not a valid gender",
+        },
         validate(value){
             if(value !== "M" && value !== "F"){
                 throw new Error("Gender must be either M or F")
@@ -81,5 +87,18 @@ const userSchema = new mongoose.Schema({
 }, {
     timestamps: true
 })
+
+//always write normal function not arrow function
+
+userSchema.index({firstName: 1, lastName: 1})
+
+userSchema.methods.getJWTToken = async function(){
+    const token = await jwt.sign({_id: this._id},"HEMDEVTINDER",{expiresIn: "7d"})
+    return token;
+}
+
+userSchema.methods.comparePassword = async function(passwordInput){
+    return await bcrypt.compare(passwordInput,this.password)
+}
 
 module.exports = mongoose.model("User", userSchema);
