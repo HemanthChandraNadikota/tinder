@@ -56,7 +56,7 @@ userRouter.get("/feed",userAuth, async(req,res)=>{
             {fromUserId: loggedInUser._id},
             {toUserId: loggedInUser._id}
         ]
-      }).select("fromUserId toUserId").populate("fromUserId","firstName lastName").populate("toUserId","firstName lastName")
+      }).select("fromUserId toUserId").populate("fromUserId","firstName lastName photoUrl age gender").populate("toUserId","firstName lastName photoUrl age gender")
 
       const hideUsers = new Set()
 

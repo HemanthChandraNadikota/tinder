@@ -50,7 +50,7 @@ authRouter.post("/login",async(req,res)=>{
             expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
         })
 
-        res.status(200).send({message: "Login successful"})
+        res.status(200).send({message: "Login successful", data: user})
         
     } catch (error) {
         res.status(500).send(error.message)
