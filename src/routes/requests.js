@@ -3,6 +3,7 @@ const requestsRouter = express.Router()
 const {userAuth} = require("../middlewares/auth")
 const ConnectionRequestModel = require("../models/conenctionRequests")
 const UserModel = require("../models/user")
+const {run} = require("../utils/sendEmail.js")
 
 requestsRouter.post("/request/send/:status/:toUserId",userAuth,async(req,res)=>{
     try {
@@ -39,6 +40,9 @@ requestsRouter.post("/request/send/:status/:toUserId",userAuth,async(req,res)=>{
             status: status,
         })
         await connectionRequest.save()
+
+        await run("Connection Request", `You have a new connection request from ${loggedInUser.firstName}`,ifUserExists.email)
+
         res.status(200).send({message: `${loggedInUser.firstName} ${status} ${ifUserExists.firstName} successfully`,connectionRequest})
     } catch (error) {
         res.status(500).send(error.message)
