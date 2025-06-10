@@ -15,7 +15,7 @@ const profileRouter = require("./routes/profile")
 const requestsRouter = require("./routes/requests")
 const userRouter = require("./routes/user")
 const cors = require("cors")
-
+require("./utils/cronJob")
 
 app.use(express.json())
 app.use(cookieParser())
